@@ -1,5 +1,6 @@
 import React,{Component, useEffect,useState} from "react";
 import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, Platform, FlatList, SafeAreaView, ActivityIndicator } from "react-native";
+import { ListItem, Avatar,Icon } from 'react-native-elements'
 
 const SearchChurchData = (props) => {
     const [jsonData, setjsonData] = useState([]);
@@ -50,33 +51,26 @@ const SearchChurchData = (props) => {
     };
       
   return (
-    <View style={{paddingBottom:"10%"}}>
-      <View style={{paddingTop:"2%",paddingBottom:"2%"}}>
-      <Text style={{fontSize:25,alignSelf:'center'}}>Churches Details</Text>
-      </View>
+    <View style={{paddingBottom:"10%",flex:1}}>
+      {/* <View style={{paddingTop:"2%",paddingBottom:"2%"}}>
+      <Text style={{fontSize:25,alignSelf:'center'}}>Search Results</Text>
+      </View> */}
     
     {
       jsonData.length > 0 ?
-      <FlatList
-      data={jsonData}
-      renderItem={({ item }) => {
-        return (
-            
-          <View key={item.id.toString()} style={styles.contaier}>
-            
-            
-              <TouchableOpacity onPress={() => {selectItemHandler(item.id)}} >
-                <Text style={styles.text}>Name : {item.name}</Text>
-                <Text style={styles.text}>Address : {item.address}</Text>
-                <Text style={styles.text}>Zip Code : {item.zipCode}</Text>
-                
-              </TouchableOpacity>
-              
-          </View>
-        );
-      }}
-      keyExtractor={item => item.id.toString()}
-    />
+      <View>
+  {
+    jsonData.map((item, i) => (
+      <ListItem key={i} bottomDivider onPress={() => {selectItemHandler(item.id)}} >
+        <ListItem.Content>
+          <ListItem.Title>{item.name}</ListItem.Title>
+          <ListItem.Subtitle >{item.address}</ListItem.Subtitle>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+    ))
+  }
+</View>
       : null
     }
 
@@ -84,18 +78,32 @@ const SearchChurchData = (props) => {
   );
 
 };
+
+
+SearchChurchData.navigationOptions = navData => {
+  return {
+      headerTitle: 'Search Results',
+  };
+};
+
+
 const styles = StyleSheet.create({
   container: {
     height: 280,
   },
   map: {
     height: 250,
-  },
+  },  
+  item: {  
+      padding: 10,  
+      fontSize: 18,  
+      height: 44,  
+  },  
   text:{
-    backgroundColor: 'transparent',
-    fontSize: 15,
-    color: 'black',
-    fontWeight: "bold",
+    // backgroundColor: 'transparent',
+    // fontSize: 15,
+    // color: 'black',
+    // fontWeight: "bold",
     alignSelf:'center'
   },
 });
