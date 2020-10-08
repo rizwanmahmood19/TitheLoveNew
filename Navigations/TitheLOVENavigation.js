@@ -18,6 +18,7 @@ import AccountScreen from '../screens/BottomTabs/SettingFolder/AccountScreen'
 import PaymentScreen from '../screens/BottomTabs/SettingFolder/PaymentScreen'
 import Donation from '../screens/BottomTabs/Donations'
 import SearchChurchData from '../screens/SearchChurchData'
+import SearchChurchData1 from '../screens/BottomTabs/SearchChurchData1'
 import TokenFromCard from '../screens/stripeFolder/TokenFormCard';
 import Home from '../screens/stripeFolder/Home';
 import GooglePayScreen from '../screens/stripeFolder/GooglePayScreen';
@@ -37,6 +38,34 @@ const defaultNavOptions = {
   },
   headerTintColor: Colors.white
 };
+
+class AuthLoginScreen extends Component
+{
+constructor(props){
+  super(props);
+  this._loadData();
+}
+
+  render(){
+    return(
+      <View style={{alignItems:'center',justifyContent:'center',flex:1}} >
+        <ActivityIndicator/>
+      </View>
+    );
+  };
+
+_loadData = async(props) =>{
+  const isLoggedIn = await AsyncStorage.getItem('userData');
+  if (!isLoggedIn) {
+    this.props.navigation.navigate('Startup');
+    return;
+  }
+  else{
+    this.props.navigation.navigate('Bottom');
+  }
+};
+
+}
 
 const WelcomeNavigation = createStackNavigator(
   {
@@ -87,7 +116,16 @@ const SettingNavigation = createStackNavigator(
     defaultNavigationOptions: defaultNavOptions
   }
 );
-
+const SearchNavigation = createStackNavigator(
+  {
+    Find1:FindOrganization,
+    SearchChurch:SearchChurchData1,
+    Login1: AuthLoginScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavOptions
+  }
+);
 const BottomTabNavigation = createMaterialBottomTabNavigator({
   Welcome: { screen: WelcomeNavigation ,
     navigationOptions:{
@@ -113,6 +151,13 @@ const BottomTabNavigation = createMaterialBottomTabNavigator({
       tabBarLabel:'Recurring',
       tabBarIcon:()=>(
         <View><MaterialCommunityIcons name="calendar-check-outline" size={23} color={Colors.primary} /></View>
+      ),
+    }},
+  Search: { screen: SearchNavigation  ,
+    navigationOptions:{
+      tabBarLabel:'Search Church',
+      tabBarIcon:()=>(
+        <View><MaterialIcons name="search" size={23} color={Colors.primary} /></View>
       ),
     }},
   Setting: { screen: SettingNavigation  ,
@@ -157,7 +202,6 @@ _loadData = async(props) =>{
 
 }
 
-
 const TitheLOVENavigation = createStackNavigator(
     {
         Find:FindOrganization,
@@ -171,9 +215,6 @@ const TitheLOVENavigation = createStackNavigator(
     }
     
   );
-
-  
-
 
 const MainNavigator = createSwitchNavigator({
   Auth:AuthLoadingScreen,

@@ -77,8 +77,7 @@ return(
         placeholder="Zip Code" 
         keyboardType="default" 
         required 
-        errorText="Please enter a valid zip code." 
-        secureTextEntry 
+        errorText="Please enter a valid zip code."
         value={zip} 
         onChangeText={(value)=>setZip(value)}
         placeholderTextColor="white"

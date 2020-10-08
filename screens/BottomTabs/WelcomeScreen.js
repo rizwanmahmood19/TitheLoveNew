@@ -1,29 +1,42 @@
 import React, { Component,useState,useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity,AsyncStorage } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity,AsyncStorage,ActivityIndicator } from "react-native";
 import MapView,{PROVIDER_GOOGLE,Marker,Callout} from "react-native-maps";
 import { LinearGradient } from 'expo-linear-gradient';
 
 const WelcomeScreen = (props) => {
-  const [jsonData, setjsonData] = useState({});
-
-  // const productId = props.navigation.getParam('productId');
-  // console.log("first hello  : " + `${productId}`);
+  const [date, setData] = useState();
+  const [isLoading, setisLoading] = useState(true);
 
 useEffect(() => {
   
   async function fetchData() {
   
   try {
-    
-
-    const churchData = await AsyncStorage.getItem('WelData');
-    const transformedData = JSON.parse(churchData);
-    setjsonData(transformedData);
 
     const churchid = await AsyncStorage.getItem('productid');
     const transformedDataid = JSON.parse(churchid);
     
     console.log("Produt id : "+transformedDataid);
+
+    const jsonToken = await AsyncStorage.getItem("userData");
+    const transformedDatatoken = JSON.parse(jsonToken);
+    console.log(transformedDatatoken);
+
+    fetch(`https://lovechurh.graystork.co/api/church_list_detail/${transformedDataid}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + transformedDatatoken.token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        setisLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     
   } 
   catch(e) {
@@ -32,32 +45,37 @@ useEffect(() => {
 }
 fetchData();
 }, []);
-  const latitude= 35.437390;
-  const longitude= -94.348993;
+
   const latitudeDelta = 0.09;
   const longitudeDelta = 0.0921;
 
-  //console.log("json object1 : "+jsonData);
+  if(isLoading){
+    return(
+        <View style={{flex:1,alignItems:'center',justifyContent:'center'}} >
+            <ActivityIndicator/>
+        </View>
+    );
+  }
+  
   return (
     <View>
       
       <View style={styles.container}>
-        <MapView provider={PROVIDER_GOOGLE} style={styles.map} initialRegion={{latitude: latitude,longitude: longitude,latitudeDelta: latitudeDelta,longitudeDelta: longitudeDelta}} >
+        <MapView provider={PROVIDER_GOOGLE} style={styles.map} initialRegion={{ "latitude": parseFloat(date.latitude), "longitude": parseFloat(date.longitude) ,latitudeDelta,longitudeDelta}} >
 
-        <Marker coordinate={{ latitude: 35.437390,longitude: -94.348993,latitudeDelta : 0.09,longitudeDelta: 0.0921 }} title={'First Baptist Church'}  >
-            {/* <Callout><Text>{jsonData.address}</Text></Callout>  */}
+        <Marker coordinate={{ "latitude": parseFloat(date.latitude), "longitude": parseFloat(date.longitude) }} title={'First Baptist Church'}  >
+             <Callout><Text>{date.address}</Text></Callout>
         </Marker>
 
         </MapView>
       </View>
 
       <Text style={{fontWeight: "bold",fontSize: 30,color: "#307AB1",paddingHorizontal: 20,}}>
-          {/* {jsonData.name}   */}
-          {/* {productId.id} */}
+           {date.name} 
       </Text>
 
       <Text style={{ fontSize: 15, padding: 20, bottom: 20 }}>
-        {/* {jsonData.address}  */}
+        {date.address}
       </Text>
 
       <TouchableOpacity style={{alignSelf:'center'}} onPress={() => { this.props.navigation.navigate("Donation");}}>
@@ -69,6 +87,7 @@ fetchData();
   );
 
 };
+
 const styles = StyleSheet.create({
   container: {
     height: 280,

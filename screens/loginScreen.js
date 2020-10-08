@@ -154,7 +154,7 @@ const inputChangeHandler = useCallback(
               required
               minLength={5}
               autoCapitalize="none"
-              errorText="Please enter a valid password."
+              //errorText="Please enter a valid password."
               onInputChange={inputChangeHandler}
               initialValue=""
         />

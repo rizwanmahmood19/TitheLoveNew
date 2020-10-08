@@ -2,7 +2,7 @@ import React,{Component, useEffect,useState} from "react";
 import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, Platform, FlatList, SafeAreaView, ActivityIndicator } from "react-native";
 import { ListItem, Avatar,Icon } from 'react-native-elements'
 
-const SearchChurchData = (props) => {
+const SearchChurchData1 = (props) => {
     const [jsonData, setjsonData] = useState([]);
 
     const saveChurchData = async (object) =>{
@@ -44,7 +44,7 @@ const SearchChurchData = (props) => {
     const selectItemHandler = (id) => {
       // const isLoggedIn =  AsyncStorage.getItem('userData');
       // if (!isLoggedIn) {
-       props.navigation.navigate('Login', { productId: id,});
+       props.navigation.navigate('Welcome', { productId: id,});
       //  return;
       // }
       // else{
@@ -87,7 +87,7 @@ const SearchChurchData = (props) => {
 };
 
 
-SearchChurchData.navigationOptions = navData => {
+SearchChurchData1.navigationOptions = navData => {
   return {
       headerTitle: 'Search Results',
   };
@@ -114,6 +114,6 @@ const styles = StyleSheet.create({
     alignSelf:'center'
   },
 });
-export default SearchChurchData;
+export default SearchChurchData1;
 
 
