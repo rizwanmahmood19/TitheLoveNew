@@ -42,14 +42,7 @@ const SearchChurchData1 = (props) => {
   }, []);
   
     const selectItemHandler = (id) => {
-      // const isLoggedIn =  AsyncStorage.getItem('userData');
-      // if (!isLoggedIn) {
        props.navigation.navigate('Welcome', { productId: id,});
-      //  return;
-      // }
-      // else{
-      //   props.navigation.navigate('Login');
-      // }
      console.log(id);
      AsyncStorage.setItem(
         'productid',

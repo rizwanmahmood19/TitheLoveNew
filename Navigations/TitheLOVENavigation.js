@@ -118,7 +118,7 @@ const SettingNavigation = createStackNavigator(
 );
 const SearchNavigation = createStackNavigator(
   {
-    Find1:FindOrganization,
+    Search:FindOrganization,
     SearchChurch:SearchChurchData1,
     Login1: AuthLoginScreen,
   },
@@ -137,15 +137,15 @@ const BottomTabNavigation = createMaterialBottomTabNavigator({
         color={Colors.primary}
       /></View>
       ),
-    }
-  },
-  History: { screen: HistoryNavigation,
-    navigationOptions:{
-      tabBarLabel:'History',
-      tabBarIcon:()=>(
-        <View><MaterialIcons name="history" size={23} color={Colors.primary} /></View>
-      ),
-    }},
+    },
+   },
+  // History: { screen: HistoryNavigation,
+  //   navigationOptions:{
+  //     tabBarLabel:'History',
+  //     tabBarIcon:()=>(
+  //       <View><MaterialIcons name="history" size={23} color={Colors.primary} /></View>
+  //     ),
+  //   }},
   Recurring: { screen: RecurringNavigation  ,
     navigationOptions:{
       tabBarLabel:'Recurring',

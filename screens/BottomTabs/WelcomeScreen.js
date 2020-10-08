@@ -78,7 +78,7 @@ fetchData();
         {date.address}
       </Text>
 
-      <TouchableOpacity style={{alignSelf:'center'}} onPress={() => { this.props.navigation.navigate("Donation");}}>
+      <TouchableOpacity style={{alignSelf:'center'}} onPress={() => { props.navigation.navigate("Donation");}}>
         <LinearGradient colors={["#307AB1", "#307AB1", "#307AB1"]} style={{ padding: 15, marginTop: 20,alignItems: "center",borderRadius: 5,width: 200,}}>
           <Text style={styles.text}>Give Now</Text>
         </LinearGradient>
